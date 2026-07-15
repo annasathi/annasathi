@@ -1,0 +1,19 @@
+{
+  "short_name": "AnnaSathi",
+  "name": "AnnaSathi: All-in-One Farmer Ecosystem",
+  "description": "Empowering farmers with AI leaf diagnostics, custom machinery rentals, FPO networks, and direct mandi access.",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#1b5e20",
+  "theme_color": "#1b5e20",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/"
+}
