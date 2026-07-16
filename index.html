@@ -363,7 +363,7 @@
                 document.getElementById('ultimateTriggerBtn').addEventListener('click', () => this.triggerAgriOSProtocol());
                 document.getElementById('btnLaunchCamera').addEventListener('click', () => document.getElementById('cameraHardwareTrigger').click());
                 document.getElementById('cameraHardwareTrigger').addEventListener('change', (e) => this.processCapturedPhoto(e));
-                document.getElementById('btnPrintReport').addEventListener('click', () => window.print());
+                
                 document.getElementById('stateSelector').addEventListener('change', (e) => this.updateDistrictHubs(e.target.value));
                 document.getElementById('enterpriseRoleSelector').addEventListener('change', (e) => this.executeRoleIsolationPipeline(e.target.value));
 
