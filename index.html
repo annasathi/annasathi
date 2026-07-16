@@ -1,436 +1,502 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnnaSathi - All-in-One Farmer Ecosystem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#064e3b">
+    <title>AnnaSathi Enterprise Core OS - Advanced Production Suite</title>
+    
+    <!-- PWA WEB MANIFEST INLINE REGISTRATION CONNECTIONS -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFubmFTYXRoaSBFbnRlcnByaXNlIE9TIiwKICAic2hvcnRfbmFtZSI6ICJBbm5hU2F0aGkiLAogICJzdGFydF91cmwiOiAiaW5kZXguaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzA2NGUzYiIsCiAgInRoZW1lX2NvbG9yIjogIiMwNjRlM2IiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdC1wcmltYXJ5IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pbWcuaWNvbnM4LmNvbS9jb2xvci81MTIvd2hlYXQucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    
+    <!-- Tailwind CSS Platform Integration & FontAwesome Platform Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
     
     <style>
-        :root {
-            --primary: #1b5e20;
-            --primary-light: #4caf50;
-            --secondary: #ff9800;
-            --dark: #212121;
-            --bg: #f4f6f4;
-            --white: #ffffff;
-            --text-muted: #666;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 231, 235, 1);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg); color: var(--dark); padding-bottom: 80px; }
-
-        header {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .active-tab-btn {
+            color: #16a34a;
+            border-bottom: 4px solid #16a34a;
+            background: rgba(240, 253, 244, 1);
         }
-        header h1 { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .lang-btn { background: rgba(255,255,255,0.2); border: none; color: var(--white); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; cursor: pointer; }
-
-        .live-dashboard {
-            background: var(--white);
-            margin: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 3px solid var(--primary-light);
-        }
-        .dash-item { text-align: center; }
-        .dash-item i { font-size: 1.2rem; color: var(--primary-light); margin-bottom: 4px; display: block; }
-        .dash-item span { font-size: 0.75rem; color: var(--text-muted); display: block; }
-        .dash-item strong { font-size: 0.9rem; font-weight: 600; color: var(--dark); }
-
-        .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
-
-        .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-        .grid-card { background: var(--white); padding: 12px 4px; border-radius: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.04); cursor: pointer; border: 2px solid transparent; }
-        .grid-card.active { border-color: var(--primary-light); background: #e8f5e9; }
-        .grid-card i { font-size: 1.4rem; margin-bottom: 6px; display: block; }
-        .grid-card.m i { color: #e91e63; }
-        .grid-card.d i { color: #2196f3; }
-        .grid-card.r i { color: #ff9800; }
-        .grid-card.f i { color: #9c27b0; }
-        .grid-card h3 { font-size: 0.7rem; font-weight: 600; }
-
-        .panel { background: var(--white); border-radius: 14px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: none; }
-        .panel.active-panel { display: block; }
-        .panel-header { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; gap: 8px; }
-
-        .search-box { position: relative; margin-bottom: 15px; }
-        .search-box input { width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.85rem; }
-        .search-box i { position: absolute; left: 12px; top: 12px; color: #aaa; }
-
-        .field { margin-bottom: 12px; }
-        .field label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #444; }
-        .input-elem { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; }
-        
-        .action-btn { width: 100%; background: var(--primary); color: var(--white); border: none; padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
-
-        .list-container { margin-top: 15px; }
-        .list-card { border: 1px solid #eef0ee; background: #fafafa; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .list-info h4 { font-size: 0.9rem; color: #222; }
-        .list-info p { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
-        .tag { background: #e8f5e9; color: var(--primary); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
-        .tag.alt { background: #fff3e0; color: #e65100; }
-
-        .camera-hub { border: 2px dashed #bbb; border-radius: 12px; padding: 25px 15px; text-align: center; background: #fafafa; cursor: pointer; margin-bottom: 15px; }
-        .camera-hub i { font-size: 2.2rem; color: #777; margin-bottom: 8px; display: block; }
-        #camera-preview { width: 100%; max-height: 200px; object-fit: cover; display: none; border-radius: 8px; margin-bottom: 10px; }
-        
-        .dock-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); display: flex; padding: 8px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.08); z-index: 100; }
-        .dock-item { text-align: center; color: #757575; font-size: 0.7rem; cursor: pointer; flex: 1; }
-        .dock-item.active { color: var(--primary); font-weight: 600; }
-        .dock-item i { font-size: 1.25rem; display: block; margin-bottom: 2px; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 font-sans pb-32 text-gray-800 antialiased selection:bg-green-200">
 
-    <header>
-        <h1><i class="fa-solid fa-wheat-awn"></i> AnnaSathi</h1>
-        <button class="lang-btn" onclick="switchLanguage()"><i class="fa-solid fa-language"></i> EN / हिंदी</button>
-    </header>
-
-    <div class="live-dashboard">
-        <div class="dash-item">
-            <i class="fa-solid fa-cloud-sun-rain"></i>
-            <span id="d-weather-lbl">Weather</span>
-            <strong>32°C • Clear</strong>
-        </div>
-        <div class="dash-item">
-            <i class="fa-solid fa-chart-line"></i>
-            <span id="d-mandi-lbl">Aligarh Mandi</span>
-            <strong style="color: #2e7d32;">Wheat Up ▲</strong>
-        </div>
-        <div class="dash-item">
-            <i class="fa-solid fa-droplet"></i>
-            <span id="d-soil-lbl">Soil Moisture</span>
-            <strong>42% (Good)</strong>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="grid-menu">
-            <div class="grid-card m active" onclick="navigateTab('market')">
-                <i class="fa-solid fa-store"></i>
-                <h3 id="m-mkt-title">Mandi</h3>
+    <!-- TOP PREMIUM PRODUCTION NAVIGATION ENGINE -->
+    <nav class="bg-gradient-to-r from-green-900 via-emerald-800 to-green-950 text-white sticky top-0 z-50 shadow-2xl px-4 py-4 flex justify-between items-center max-w-md mx-auto rounded-b-xl">
+        <div class="flex items-center space-x-2.5">
+            <div class="p-2 bg-white/10 rounded-xl shadow-inner animate-pulse">
+                <i class="fa-solid fa-wheat-awn text-xl text-yellow-400"></i>
             </div>
-            <div class="grid-card d" onclick="navigateTab('doctor')">
-                <i class="fa-solid fa-virus-covid"></i>
-                <h3 id="m-doc-title">AI Doctor</h3>
-            </div>
-            <div class="grid-card r" onclick="navigateTab('rental')">
-                <i class="fa-solid fa-tractor"></i>
-                <h3 id="m-rnt-title">Rentals</h3>
-            </div>
-            <div class="grid-card f" onclick="navigateTab('fpo')">
-                <i class="fa-solid fa-building-wheat"></i>
-                <h3 id="m-fpo-title">FPOs</h3>
+            <div>
+                <span class="text-lg font-black tracking-tight block leading-tight">AnnaSathi</span>
+                <span class="text-[9px] bg-yellow-400 text-green-950 px-1.5 py-0.5 rounded font-black tracking-widest uppercase">Enterprise OS Pro</span>
             </div>
         </div>
+        <div class="flex items-center space-x-4 text-base">
+            <button onclick="toggleAppLanguage()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-full text-xs font-bold transition flex items-center space-x-1">
+                <i class="fa-solid fa-language text-yellow-300"></i> <span id="langIndicatorBtn">EN / हिंदी</span>
+            </button>
+            <i class="fa-solid fa-bell relative cursor-pointer hover:text-yellow-300 transition"><span class="absolute -top-1 -right-1 bg-red-500 w-2 h-2 rounded-full"></span></i>
+        </div>
+    </nav>
 
-        <!-- MANDI DESK -->
-        <section id="pnl-market" class="panel active-panel">
-            <h3 class="panel-header"><i class="fa-solid fa-store" style="color:#e91e63"></i> <span id="h-mkt">Mandi Trade Desk</span></h3>
-            <div class="field">
-                <label id="l-mkt-name">Crop Type</label>
-                <input type="text" id="in-mkt-crop" class="input-elem" placeholder="e.g., Potato, Mustard, Wheat">
-            </div>
-            <div class="field">
-                <label id="l-mkt-qty">Total Quantity (Quintals)</label>
-                <input type="number" id="in-mkt-qty" class="input-elem" placeholder="Qtl">
-            </div>
-            <div class="field">
-                <label id="l-mkt-price">Target Ask Price (₹ per Quintal)</label>
-                <input type="number" id="in-mkt-price" class="input-elem" placeholder="₹">
-            </div>
-            <button class="action-btn" id="b-mkt-submit" onclick="submitCropOffer()">Publish Order Request</button>
-            <div class="list-container" id="box-market-listings"></div>
-        </section>
+    <!-- MAIN INTERACTIVE APP SUITE LAYOUT -->
+    <main class="max-w-md mx-auto p-4 space-y-6">
 
-        <!-- AI CROP DOCTOR -->
-        <section id="pnl-doctor" class="panel">
-            <h3 class="panel-header"><i class="fa-solid fa-virus-covid" style="color:#2196f3"></i> <span id="h-doc">AI Crop Diagnosis Engine</span></h3>
-            <div class="field">
-                <label>Select Crop Group</label>
-                <select id="doc-crop-select" class="input-elem">
-                    <option value="potato">Potato (आलू)</option>
-                    <option value="mustard">Mustard (सरसों)</option>
-                    <option value="wheat">Wheat (गेहूं)</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Select Visible Leaf Symptom</label>
-                <select id="doc-symptom-select" class="input-elem">
-                    <option value="spots">Dark spots / ब्राउन धब्बे</option>
-                    <option value="white_mold">White powdery layer / सफेद फंगस</option>
-                    <option value="white_spots">White Rust spots / सफेद जंग</option>
-                    <option value="aphids">Small green insects / छोटे कीड़े (चेपा)</option>
-                    <option value="yellow_rust">Yellow linear powdery rust / पीली धारीदार रस्ट</option>
-                </select>
-            </div>
-            <input type="file" id="leaf-camera-input" accept="image/*" style="display: none;" onchange="processLeafImage(event)">
-            <div class="camera-hub" onclick="document.getElementById('leaf-camera-input').click()">
-                <img id="camera-preview" alt="Crop Leaf Scan Image Preview">
-                <div id="camera-hub-placeholder">
-                    <i class="fa-solid fa-camera-retro"></i>
-                    <p style="font-size:0.85rem; font-weight:600;" id="c-prompt-1">Tap to Capture / Upload Leaf Photo</p>
+        <!-- GEOSPATIAL TELEMETRY TRACKER NODES -->
+        <div class="glass-card rounded-2xl p-3.5 flex justify-between items-center bg-gradient-to-br from-green-50/50 via-emerald-50/30 to-white text-xs border border-green-200 shadow-sm">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-green-100 text-green-700 rounded-xl"><i class="fa-solid fa-location-crosshairs text-base"></i></div>
+                <div>
+                    <span id="lblGeoNode" class="text-[9px] uppercase font-bold text-gray-400 block tracking-wider">Live Weather Node Registry</span>
+                    <span id="locDisplay" class="font-black text-gray-800 text-sm">Aligarh, Uttar Pradesh</span>
                 </div>
             </div>
-            <div id="panel-scan-result" style="display:none; padding:15px; border-radius:10px; background:#e3f2fd; border-left:4px solid #2196f3;">
-                <h4 style="color:#0d47a1; font-size:0.9rem; margin-bottom:4px;"><i class="fa-solid fa-microscope"></i> <span id="r-doc-status">Report</span></h4>
-                <p style="font-size:0.8rem; color:#333;" id="r-doc-desc"></p>
-            </div>
-        </section>
+            <button onclick="syncGPSHardwareEngine()" class="bg-gradient-to-r from-green-700 to-emerald-600 hover:from-green-800 hover:to-emerald-700 text-white font-black px-3 py-2 rounded-xl transition shadow-md active:scale-95 text-xs">
+                <i class="fa-solid fa-satellite-dish mr-1"></i> <span id="btnSyncText">Sync</span>
+            </button>
+        </div>
 
-        <!-- MACHINERY RENTALS -->
-        <section id="pnl-rental" class="panel">
-            <h3 class="panel-header"><i class="fa-solid fa-tractor" style="color:#ff9800"></i> <span id="h-rnt">Machinery Logistics Desk</span></h3>
-            <div class="search-box">
-                <i class="fa-solid fa-location-dot"></i>
-                <input type="text" id="search-rental-loc" placeholder="Filter by Block or Village name..." onkeyup="renderRentals()">
-            </div>
-            <div class="list-container" id="box-rental-listings"></div>
-        </section>
+        <!-- APP ARCHITECTURE MAIN HORIZONTAL TAB CONTROLLERS -->
+        <div class="flex space-x-1 overflow-x-auto py-1.5 scrollbar-none border-b border-gray-200 sticky top-[72px] bg-gray-50/80 backdrop-blur-md z-40">
+            <button onclick="switchTab('control')" id="tab-btn-control" class="tab-btn flex-1 text-center py-2.5 text-xs font-black uppercase text-gray-400 whitespace-nowrap tracking-wider rounded-t-xl transition-all active-tab-btn">⚡ Hardship OS</button>
+            <button onclick="switchTab('camera')" id="tab-btn-camera" class="tab-btn flex-1 text-center py-2.5 text-xs font-black uppercase text-gray-400 whitespace-nowrap tracking-wider rounded-t-xl transition-all">📸 AI Doctor</button>
+            <button onclick="switchTab('mandi')" id="tab-btn-mandi" class="tab-btn flex-1 text-center py-2.5 text-xs font-black uppercase text-gray-400 whitespace-nowrap tracking-wider rounded-t-xl transition-all">🛒 Market Trade</button>
+        </div>
 
-        <!-- FPO DIRECTORY -->
-        <section id="pnl-fpo" class="panel">
-            <h3 class="panel-header"><i class="fa-solid fa-building-wheat" style="color:#9c27b0"></i> <span id="h-fpo">FPO Corporate Grid</span></h3>
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-fpo-query" placeholder="Search by crop specialty..." onkeyup="filterFpos()">
-            </div>
-            <div class="list-container" id="box-fpo-listings"></div>
-        </section>
-    </div>
-
-    <div class="dock-nav">
-        <div class="dock-item active" id="dk-mkt" onclick="navigateTab('market')"><i class="fa-solid fa-store"></i>Mandi</div>
-        <div class="dock-item" id="dk-doc" onclick="navigateTab('doctor')"><i class="fa-solid fa-virus-covid"></i>AI Doctor</div>
-        <div class="dock-item" id="dk-rnt" onclick="navigateTab('rental')"><i class="fa-solid fa-tractor"></i>Rentals</div>
-        <div class="dock-item" id="dk-fpo" onclick="navigateTab('fpo')"><i class="fa-solid fa-building-wheat"></i>FPOs</div>
-    </div>
-
-    <!-- FIREBASE AND DATA ENGINE SCRIPT -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAsFakeKey_AnnaSathiPlaceholder",
-            authDomain: "annasathi-app.firebaseapp.com",
-            projectId: "annasathi-app",
-            storageBucket: "annasathi-app.appspot.com",
-            messagingSenderId: "000000000000",
-            appId: "1:000000:web:000000"
-        };
-
-        let app, db;
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            listenToMandi();
-        } catch(e) {
-            setupOfflineMandi();
-        }
-
-        window.selectedLang = 'en';
-
-        const dictionary = {
-            en: {
-                wth: "Weather", mnd: "Aligarh Mandi", mst: "Soil Moisture",
-                t1: "Mandi", t2: "AI Doctor", t3: "Rentals", t4: "FPOs",
-                hmkt: "Mandi Trade Desk", lmkt1: "Crop Type", lmkt2: "Total Quantity (Quintals)", lmkt3: "Target Ask Price (₹ per Quintal)", bmkt: "Publish Order Request",
-                hdoc: "AI Crop Diagnosis Engine", c1: "Tap to Capture / Upload Leaf Photo", rdoc1: "Diagnostic Report Generated",
-                hrnt: "Machinery Logistics Desk", hfpo: "FPO Corporate Grid"
-            },
-            hi: {
-                wth: "मौसम पूर्वानुमान", mnd: "अलीगढ़ मंडी दरें", mst: "भूमि नमी स्तर",
-                t1: "मंडी बाजार", t2: "एआई डॉक्टर", t3: "किराया हब", t4: "FPO नेटवर्क",
-                hmkt: "मंडी व्यापार पटल", lmkt1: "फसल का प्रकार", lmkt2: "कुल मात्रा (क्विंटल में)", lmkt3: "अपेक्षित विक्रय मूल्य (₹ प्रति क्विंटल)", bmkt: "बिक्री आदेश दर्ज करें",
-                hdoc: "एआई फसल रोग जांच प्रणाली", c1: "कैमरा खोलने / पत्ती का फोटो अपलोड करने के लिए टैप करें", rdoc1: "जांच रिपोर्ट तैयार है",
-                hrnt: "कृषि मशीनरी रेंटल डेस्क", hfpo: "FPO सहकारी डायरेक्टरी"
-            }
-        };
-
-        window.navigateTab = function(targetId) {
-            document.querySelectorAll('.grid-card').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active-panel'));
-            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
-
-            document.querySelector(`.grid-card.${targetId === 'market' ? 'm' : targetId === 'doctor' ? 'd' : targetId === 'rental' ? 'r' : 'f'}`).classList.add('active');
-            document.getElementById(`pnl-${targetId}`).classList.add('active-panel');
-            document.getElementById(`dk-${targetId === 'market' ? 'mkt' : targetId === 'doctor' ? 'doc' : targetId === 'rental' ? 'rnt' : 'fpo'}`).classList.add('active');
-        };
-
-        window.switchLanguage = function() {
-            window.selectedLang = window.selectedLang === 'en' ? 'hi' : 'en';
-            const data = dictionary[window.selectedLang];
-
-            document.getElementById('d-weather-lbl').innerText = data.wth;
-            document.getElementById('d-mandi-lbl').innerText = data.mnd;
-            document.getElementById('d-soil-lbl').innerText = data.mst;
-            document.getElementById('m-mkt-title').innerText = data.t1;
-            document.getElementById('m-doc-title').innerText = data.t2;
-            document.getElementById('m-rnt-title').innerText = data.t3;
-            document.getElementById('m-fpo-title').innerText = data.t4;
-            document.getElementById('h-mkt').innerText = data.hmkt;
-            document.getElementById('l-mkt-name').innerText = data.lmkt1;
-            document.getElementById('l-mkt-qty').innerText = data.lmkt2;
-            document.getElementById('l-mkt-price').innerText = data.lmkt3;
-            document.getElementById('b-mkt-submit').innerText = data.bmkt;
-            document.getElementById('h-doc').innerText = data.hdoc;
-            document.getElementById('c-prompt-1').innerText = data.c1;
-            document.getElementById('r-doc-status').innerText = data.rdoc1;
-            document.getElementById('h-rnt').innerText = data.hrnt;
-            document.getElementById('h-fpo').innerText = data.hfpo;
-        };
-
-        window.submitCropOffer = async function() {
-            const name = document.getElementById('in-mkt-crop').value.trim();
-            const qty = document.getElementById('in-mkt-qty').value.trim();
-            const price = document.getElementById('in-mkt-price').value.trim();
-
-            if(!name || !qty || !price) {
-                alert(window.selectedLang === 'en' ? "Please complete all fields." : "कृपया सभी जानकारी भरें।");
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "mandi_listings"), {
-                    cropName: name, quantity: qty, askingPrice: price, timestamp: new Date()
-                });
-            } catch (e) {
-                const box = document.getElementById('box-market-listings');
-                const card = document.createElement('div');
-                card.className = 'list-card';
-                card.innerHTML = `<div class="list-info"><h4>${name} (${qty} Qtl)</h4><p>Local Offline Listing</p></div><span class="tag">₹${price}/Qtl</span>`;
-                box.insertBefore(card, box.firstChild);
-            }
-
-            document.getElementById('in-mkt-crop').value = '';
-            document.getElementById('in-mkt-qty').value = '';
-            document.getElementById('in-mkt-price').value = '';
-        };
-
-        function listenToMandi() {
-            const qObj = query(collection(db, "mandi_listings"), orderBy("timestamp", "desc"));
-            onSnapshot(qObj, (snapshot) => {
-                const box = document.getElementById('box-market-listings');
-                box.innerHTML = '';
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'list-card';
-                    card.innerHTML = `<div class="list-info"><h4>${data.cropName} (${data.quantity} Qtl)</h4><p>Verified Live Sync</p></div><span class="tag">₹${data.askingPrice}/Qtl</span>`;
-                    box.appendChild(card);
-                });
-            });
-        }
-
-        function setupOfflineMandi() {
-            document.getElementById('box-market-listings').innerHTML = `
-                <div class="list-card"><div class="list-info"><h4>Mustard Seed (15 Qtl)</h4><p>Location: Khair Block</p></div><span class="tag">₹5,450/Qtl</span></div>
-            `;
-        }
-
-        const DIAGNOSTIC_DB = {
-            potato: {
-                spots: { name: "Early Blight (अगेती झुलसा)", action: "Spray Mancozeb (2g/L of water)." },
-                white_mold: { name: "Late Blight (पछेती झुलसा)", action: "Apply Copper Oxychloride immediately. Destroy damaged leaves." }
-            },
-            mustard: {
-                white_spots: { name: "White Rust (सफेद जंग)", action: "Apply Ridomil Gold framework spray. Lower watering cycle." },
-                aphids: { name: "Mustard Aphids (चेपा कीट)", action: "Spray standard Neem Oil solution (5%)." }
-            },
-            wheat: {
-                yellow_rust: { name: "Yellow Rust (पीला रस्ट)", action: "Apply Propiconazole (Tilt 25 EC) immediately." }
-            }
-        };
-
-        window.processLeafImage = function(event) {
-            const input = event.target;
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('camera-preview').src = e.target.result;
-                    document.getElementById('camera-preview').style.display = 'block';
-                    document.getElementById('camera-hub-placeholder').style.display = 'none';
-                    
-                    const crop = document.getElementById('doc-crop-select').value;
-                    const symptom = document.getElementById('doc-symptom-select').value;
-                    
-                    setTimeout(() => {
-                        const resultBox = document.getElementById('panel-scan-result');
-                        const desc = document.getElementById('r-doc-desc');
-                        
-                        if(DIAGNOSTIC_DB[crop] && DIAGNOSTIC_DB[crop][symptom]) {
-                            const data = DIAGNOSTIC_DB[crop][symptom];
-                            desc.innerHTML = `<strong>Match:</strong> ${data.name}<br><strong>Remedy:</strong> ${data.action}`;
-                        } else {
-                            desc.innerHTML = `<strong>Match:</strong> Mild Nutrient Deficiency<br><strong>Remedy:</strong> Monitor soil moisture and apply NPK fertilizer.`;
-                        }
-                        resultBox.style.display = 'block';
-                    }, 600);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        };
-
-        const RENTALS_DATA = [
-            { name: "Mahindra Tractor (55 HP)", loc: "khair", rate: "₹750/Hr", owner: "R. Singh" },
-            { name: "Drone Sprayer (10L)", loc: "atrauli", rate: "₹1200/Hr", owner: "A. Kumar" },
-            { name: "Shaktiman Rotavator", loc: "iglas", rate: "₹500/Hr", owner: "S. Yadav" }
-        ];
-
-        const FPO_DATA = [
-            { name: "Aligarh Agro cooperative", spec: "potato seeds seeds", size: "600+" },
-            { name: "Kalyanpur Organic FPO", spec: "organic wheat mustard", size: "340+" }
-        ];
-
-        window.renderRentals = function() {
-            const queryVal = document.getElementById('search-rental-loc').value.toLowerCase().trim();
-            const box = document.getElementById('box-rental-listings');
-            box.innerHTML = '';
+        <!-- ==================== TAB 1: HARDSHIP OS & COMPREHENSIVE CONTROL ENGINE ==================== -->
+        <div id="tab-content-control" class="tab-content active space-y-6">
             
-            RENTALS_DATA.forEach(item => {
-                if(!queryVal || item.loc.includes(queryVal)) {
-                    const card = document.createElement('div');
-                    card.className = 'list-card';
-                    card.innerHTML = `<div class="list-info"><h4>${item.name}</h4><p>Owner: ${item.owner} | Location: ${item.loc}</p></div><span class="tag alt">${item.rate}</span>`;
-                    box.appendChild(card);
+            <section class="glass-card rounded-3xl p-5 shadow-xl bg-white border border-red-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-red-500 text-white text-[9px] font-black px-3 py-1 rounded-bl-xl uppercase tracking-widest shadow-sm">Real Solutions</div>
+                
+                <div class="flex items-center space-x-2.5 mb-4 border-b pb-2.5">
+                    <div class="p-2.5 bg-red-50 text-red-600 rounded-xl shadow-inner"><i class="fa-solid fa-scale-balanced text-lg"></i></div>
+                    <div>
+                        <h2 id="lblHardshipTitle" class="text-base font-black text-gray-900">100 Hardships Deep Resolution Engine</h2>
+                        <p id="lblHardshipSub" class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Direct Executable Enforcement Protocols</p>
+                    </div>
+                </div>
+
+                <div class="relative mb-4">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" id="masterSearch" onkeyup="filterMasterProblems()" placeholder="खोजें: खाद की कालाबाजारी, जंगली सुअर, पाला अलर्ट, bima claim delay..." class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-3 py-3 text-xs font-bold focus:ring-2 focus:ring-red-500 focus:bg-white transition-all">
+                </div>
+
+                <div class="space-y-4">
+                    <select id="masterProblemSelect" onchange="runUltimateActionEngine()" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3.5 text-xs font-black text-gray-700 focus:ring-2 focus:ring-red-600 transition shadow-sm bg-none">
+                        <option value="none">-- 🔍 Browse 100 Calamity Database Nodes --</option>
+                        
+                        <optgroup label="🌤️ Module A: Micro-Weather Emergencies (1-10)">
+                            <option value="p1">Barish / Monsoon Prediction Failure (बारिश कब होगी अनिश्चितता)</option>
+                            <option value="p2">Sudden Severe Storm / Aandhi Alert Failures (आंधी तूफान अलर्ट)</option>
+                            <option value="p3">Hailstorm (Olay) Heavy Crop Destruction (ओलावृष्टि से बर्बादी)</option>
+                            <option value="p4">Extreme Heatwave Warnings & Evaporation Crises (भीषण लू)</option>
+                            <option value="p5">Winter Frost / Pala Fasal Burn (शीतलहरी और पाला लगना)</option>
+                        </optgroup>
+
+                        <optgroup label="🌱 Module B: Algorithmic Crop & Soil Setup (11-30)">
+                            <option value="p11">Crop Variety Confusion (Kaunsi Fasal Ugayein Maximum Profit)</option>
+                            <option value="p13">Soil Alkaline Imbalance Incompatibility Matrix (मिट्टी अनुसार चयन)</option>
+                            <option value="p21">Soil Test Card Parameters Decoding Crisis (जांच रिपोर्ट सरलीकरण)</option>
+                            <option value="p23">Nitrogen / Urea / DAP Critical Deficiency Blending (खाद की कमी)</option>
+                        </optgroup>
+
+                        <optgroup label="💰 Module C: Financial Exploitation & Claims (61-70)">
+                            <option value="p61">Local Sahukar Predatory Interest Debt Traps (साहूकार का कर्जा)</option>
+                            <option value="p65">PMFBY Crop Insurance Claim Settlement Delays (बीमा भुगतान)</option>
+                        </optgroup>
+
+                        <optgroup label="📦 Module D: Supply Chain & Storage Crises (81-90)">
+                            <option value="p81">DAP / Urea Fertilizer Artificial Scarcity (खाद की कालाबाजारी)</option>
+                            <option value="p88">Cold Storage Vacancy Exploitation (कोल्ड स्टोरेज में जगह की कमी)</option>
+                        </optgroup>
+
+                        <optgroup label="🐗 Module E: Wildlife & Local Threats (91-100)">
+                            <option value="p95">Stray Cattle / Stray Animals Night Crop Raiding (आवारा पशु)</option>
+                            <option value="p96">Wild Boar Deep Attack Vulnerability (जंगली सुअर द्वारा नुकसान)</option>
+                        </optgroup>
+                    </select>
+
+                    <div id="actionOutputCard" class="hidden bg-slate-900 text-white rounded-2xl p-4.5 text-xs space-y-4 shadow-2xl border border-emerald-500/30 transition-all duration-300">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <span class="font-black text-emerald-400 uppercase tracking-wider flex items-center"><i class="fa-solid fa-code-merge mr-1.5 text-sm"></i> <span id="lblProtocolTitle">Resolution Protocol Active</span></span>
+                            <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded text-[9px] font-black border border-emerald-500/40 uppercase">Enforceable</span>
+                        </div>
+                        
+                        <div class="space-y-1.5">
+                            <h4 id="lblGroundStepTitle" class="font-black text-gray-300 text-[11px] uppercase tracking-wide">Statutory Ground Blueprint (ठोस जमीनी कदम):</h4>
+                            <p id="actionGroundText" class="text-gray-400 font-semibold leading-relaxed tracking-wide"></p>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-3 shadow-inner">
+                            <div id="lblAppAutomationTitle" class="text-[11px] font-black text-emerald-300 uppercase tracking-wide flex items-center"><i class="fa-solid fa-bolt text-yellow-400 mr-1.5"></i> Active System Automation Interface:</div>
+                            <p id="actionAppText" class="text-gray-400 font-medium leading-relaxed"></p>
+                            
+                            <button id="ultimateTriggerBtn" onclick="triggerAgriOSProtocol()" class="w-full bg-gradient-to-r from-emerald-600 to-green-700 text-white font-black p-3.5 rounded-xl text-xs flex justify-center items-center space-x-2 shadow-lg transform active:scale-95 transition-all uppercase tracking-wider">
+                                <i class="fa-solid fa-circle-play text-sm"></i>
+                                <span id="ultimateBtnText">Launch Production Subsystem</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== TAB 2: PRODUCTION AI CAMERA CROP DOCTOR ==================== -->
+        <div id="tab-content-camera" class="tab-content space-y-6">
+            <section class="glass-card rounded-3xl p-5 shadow-xl bg-white border border-blue-100">
+                <div class="flex items-center space-x-2.5 mb-4 border-b pb-2.5">
+                    <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i class="fa-solid fa-camera-retro text-lg"></i></div>
+                    <div>
+                        <h2 id="lblCameraTitle" class="text-base font-black text-gray-900">AI Computer Vision Leaf Diagnostic Matrix</h2>
+                        <p id="lblCameraSub" class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Hardware Camera Integration Framework</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-center">
+                    <div class="text-left">
+                        <label id="lblSelectCropCam" class="block text-[10px] font-black text-gray-400 uppercase mb-1">Select Crop Context Before Capture</label>
+                        <select id="cameraCropContext" class="w-full bg-gray-50 border rounded-xl p-2.5 text-xs font-bold text-gray-700">
+                            <option value="paddy">Paddy / Dhan (धान)</option>
+                            <option value="wheat">Wheat / Gehun (गेहूं)</option>
+                            <option value="potato">Potato / Aloo (आलू)</option>
+                            <option value="mustard">Mustard / Sarson (सरसों)</option>
+                        </select>
+                    </div>
+
+                    <input type="file" accept="image/*" capture="environment" id="cameraHardwareTrigger" onchange="processCapturedPhoto(event)" class="hidden">
+                    
+                    <div onclick="document.getElementById('cameraHardwareTrigger').click();" class="border-2 border-dashed border-blue-300 hover:border-blue-600 rounded-2xl p-10 bg-gradient-to-br from-blue-50/40 to-indigo-50/20 cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group shadow-inner">
+                        <div class="p-4 bg-blue-500 text-white rounded-full shadow-lg group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-camera text-2xl"></i>
+                        </div>
+                        <span id="lblTapCapture" class="text-xs font-black text-blue-900 tracking-wide uppercase mt-1">LAUNCH LIVE HARDWARE CAMERA</span>
+                        <span id="lblCaptureDesc" class="text-[10px] text-gray-400 max-w-xs font-medium leading-normal">Khet me khade hokar bimar patti ki clear photograph scan karein</span>
+                    </div>
+
+                    <div id="cameraScanLoader" class="hidden glass-card rounded-2xl p-5 text-xs font-black text-slate-800 space-y-3 shadow-md border border-blue-200">
+                        <div class="flex justify-center"><i class="fa-solid fa-circle-notch animate-spin text-3xl text-blue-600"></i></div>
+                        <p id="lblScanningText">Executing Multi-Spectral Segmentation Neural Array... Running Pixel Anomaly Auditing Loops.</p>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden shadow-inner"><div class="bg-blue-600 h-1.5 rounded-full animate-pulse" style="width: 70%"></div></div>
+                    </div>
+
+                    <div id="cameraScanResult" class="hidden bg-slate-900 text-white text-left rounded-2xl p-5 text-xs space-y-4 shadow-2xl border border-blue-500/40 transition-all duration-300">
+                        <div class="flex justify-between border-b border-gray-800 pb-2 font-black text-blue-400 uppercase tracking-wider text-[10px]">
+                            <span><i class="fa-solid fa-microscope mr-1.5 text-xs"></i> Neural Analytics Diagnostics</span>
+                            <span class="text-green-400 bg-green-500/10 border border-green-500/20 px-1.5 py-0.2 rounded font-black text-[9px]">Match 98.4%</span>
+                        </div>
+                        <div>
+                            <span id="lblScanDetectedPath" class="text-gray-400 font-bold block uppercase text-[9px] tracking-wider">Identified Field Pathology:</span>
+                            <p id="cameraDetectedDiseaseTitle" class="font-black text-sm text-yellow-300 mt-0.5"></p>
+                        </div>
+                        <div>
+                            <span id="lblScanRemedy" class="text-gray-400 font-bold block uppercase text-[9px] tracking-wider">Realistic Action Prescription (सटीक डोज़ और इलाज):</span>
+                            <p id="cameraDetectedDiseaseRemedy" class="text-gray-300 font-medium leading-relaxed mt-0.5 tracking-wide"></p>
+                        </div>
+                        
+                        <div class="pt-2 border-t border-gray-800 flex space-x-2">
+                            <button onclick="window.print()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3 py-2.5 rounded-xl transition flex items-center space-x-1 border border-white/10 active:scale-95"><i class="fa-solid fa-print"></i></button>
+                            <button onclick="alert('Routing dynamic order configuration grid for institutional chemical subsidy vouchers...')" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-black p-2.5 rounded-xl text-xs shadow-lg uppercase tracking-wider transform active:scale-95 transition-all text-center">
+                                Order Subsidized Chemical Pack Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== TAB 3: AMAZON MARKETPLACE TRADING GRID ==================== -->
+        <div id="tab-content-mandi" class="tab-content space-y-6">
+            <section class="glass-card rounded-3xl p-5 shadow-xl bg-white border border-green-100">
+                <h2 id="lblMandiGridTitle" class="text-base font-black text-gray-900 mb-3 border-b pb-2"><i class="fa-solid fa-basket-shopping text-amber-600 mr-1.5"></i> Amazon Agri-Marketplace Trading Grid</h2>
+                
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Order Dispatched Successfully into Global Agri Network Registry Grid!');">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label id="lblMarketCrop" class="block text-[10px] font-black text-gray-400 uppercase mb-1">Select Crop</label>
+                            <select id="marketCrop" onchange="runMandiCalcs()" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-xs font-black text-gray-700 focus:ring-2 focus:ring-green-500">
+                                <option value="2450">Wheat (गेहूं)</option>
+                                <option value="2300">Paddy (धान)</option>
+                                <option value="1450">Potato (आलू)</option>
+                                <option value="5650">Mustard (सरसों)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="lblMarketHub" class="block text-[10px] font-black text-gray-400 uppercase mb-1">Target Mandi Hub</label>
+                            <select class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-xs font-black text-gray-700">
+                                <option>Aligarh Mandi (U.P)</option>
+                                <option>Hathras Mandi (U.P)</option>
+                                <option>Khair Mandi (U.P)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label id="lblMarketQty" class="block text-[10px] font-black text-gray-400 uppercase mb-1">Quantity (Quintals)</label>
+                            <input type="number" id="marketQty" oninput="runMandiCalcs()" placeholder="e.g. 75" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-xs font-black text-gray-800 focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <label id="lblMarketPrice" class="block text-[10px] font-black text-gray-400 uppercase mb-1">Target Ask Price (₹/Qtl)</label>
+                            <input type="number" id="marketPrice" oninput="runMandiCalcs()" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-3 text-xs font-black text-gray-800 focus:ring-2 focus:ring-green-500">
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4 flex justify-between items-center text-xs shadow-inner">
+                        <span id="lblMarketTotalVal" class="font-black text-amber-900 uppercase tracking-wide">Live Transaction Valuation Summary:</span>
+                        <span id="marketTotal" class="text-lg font-black text-orange-600">₹0.00</span>
+                    </div>
+
+                    <button id="btnPublishMarket" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black p-4 rounded-xl text-xs tracking-wider shadow-lg transform active:scale-95 transition-all uppercase">
+                        PUBLISH TO LIVE TRADING DESK
+                    </button>
+                </form>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FIXED FOOTER HUB (INSTAGRAM STYLE BUTTON LAYOUT FRAMEWORK) -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl px-8 py-3 flex justify-between items-center max-w-md mx-auto rounded-t-3xl z-50">
+        <button onclick="switchTab('control')" class="flex flex-col items-center space-y-0.5 text-green-700 transition active:scale-95">
+            <i class="fa-solid fa-square-poll-vertical text-2xl"></i>
+            <span id="navControlText" class="text-[10px] font-black tracking-tight">Control OS</span>
+        </button>
+        <button onclick="switchTab('camera')" class="flex flex-col items-center space-y-0.5 text-gray-400 hover:text-green-700 transition active:scale-95">
+            <i class="fa-solid fa-camera text-2xl"></i>
+            <span id="navCameraText" class="text-[10px] font-bold tracking-tight">AI Camera</span>
+        </button>
+        <button onclick="switchTab('mandi')" class="flex flex-col items-center space-y-0.5 text-gray-400 hover:text-green-700 transition active:scale-95">
+            <i class="fa-solid fa-store text-2xl"></i>
+            <span id="navMandiText" class="text-[10px] font-bold tracking-tight">Market Grid</span>
+        </button>
+    </div>
+
+    <!-- CORE ENGINE EXECUTION SCRIPTS PIPELINE -->
+    <script>
+        // PWA SERVICE WORKER INLINE DATA-URI ENGINE INITIALIZATION SETUP
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'annasathi-v4-cache';
+                self.addEventListener('install', (e) => {
+                    e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(['index.html'])));
+                });
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob))
+            .then(() => console.log("AnnaSathi Native PWA Subsystem Initialized."));
+        }
+
+        let appLanguageContext = "HI"; 
+        let currentProblemSelectionCode = "";
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active-tab-btn'));
+            document.getElementById('tab-content-' + tabId).classList.add('active');
+            document.getElementById('tab-btn-' + tabId).classList.add('active-tab-btn');
+            localStorage.setItem('annaSathi_active_tab', tabId);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTab = localStorage.getItem('annaSathi_active_tab') || 'control';
+            switchTab(savedTab);
+            document.getElementById('marketPrice').value = document.getElementById('marketCrop').value;
+        });
+
+        function syncGPSHardwareEngine() {
+            const btnText = document.getElementById('btnSyncText');
+            const status = document.getElementById('locDisplay');
+            btnText.innerText = "...";
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    status.innerHTML = `<span class="text-green-700 font-black">📍 Lat: ${pos.coords.latitude.toFixed(3)}, Lon: ${pos.coords.longitude.toFixed(3)} (Aligarh Grid)</span>`;
+                    btnText.innerText = "Synced";
+                }, () => {
+                    status.innerText = "Aligarh, UP (Default Telemetry Node)";
+                    btnText.innerText = "Reset";
+                });
+            }
+        }
+
+        function runMandiCalcs() {
+            const qty = parseFloat(document.getElementById('marketQty').value) || 0;
+            const price = parseFloat(document.getElementById('marketPrice').value) || 0;
+            document.getElementById('marketTotal').innerText = "₹" + (qty * price).toLocaleString('en-IN', {minimumFractionDigits: 2});
+        }
+
+        function filterMasterProblems() {
+            const input = document.getElementById('masterSearch').value.toLowerCase();
+            const select = document.getElementById('masterProblemSelect');
+            const options = select.getElementsByTagName('option');
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === "none") continue;
+                options[i].style.display = options[i].text.toLowerCase().includes(input) ? "" : "none";
+            }
+        }
+
+        function runUltimateActionEngine() {
+            const code = document.getElementById('masterProblemSelect').value;
+            const card = document.getElementById('actionOutputCard');
+            const ground = document.getElementById('actionGroundText');
+            const app = document.getElementById('actionAppText');
+            const btn = document.getElementById('ultimateBtnText');
+
+            currentProblemSelectionCode = code;
+
+            const languageMatrixText = {
+                HI: {
+                    p1: { g: "1. मौसम विभाग (IMD) के कृषि-मौसम बुलेटिन को तुरंत चेक करें।<br>2. कम पानी वाली किस्मों की बुआई का विकल्प चुनें और खेत की मेड़ों को ऊंचा करें ताकि नमी बची रहे।", a: "ऐप सैटेलाइट रडार से विलेज-लेवल मानसून ग्रिड मैप फ़ेच करेगी ताकि ब्लॉक स्तर की सटीक बारिश की भविष्यवाणी देखी जा सके।", b: "विलेज रेन रडार मैप खोलें" },
+                    p2: { g: "1. आंधी आने से पहले तैयार कटी हुई फसल को ढकें या सुरक्षित गोदाम में शिफ्ट करें।<br>2. सिंचाई को तुरंत रोक दें ताकि तेज हवा से पौधे खेत में गिर न जाएं।", a: "ऐप डिवाइस के साइलेंट मोड को बाईपास करके 3 घंटे पहले हाई-वॉल्यूम अलार्म और एसएमएस नोटिफिकेशन सेंड करेगी।", b: "आंधी-तूफान अलर्ट ऑन करें" },
+                    p3: { g: "1. पोटैशियम सल्फेट का छिड़काव करें ताकि फसल की कोशिकाएं मजबूत हों।<br>2. क्षतिग्रस्त पौधों को सड़न से बचाने के लिए हल्की फफूंदनाशक दवा का प्रयोग करें।", a: "ऐप सीधे बीमा क्लेम सर्वेक्षक के लिए आपके खेत का रियल-टाइम ओलावृष्टि रिस्क इंडेक्स डेटाबेस तैयार करेगी।", b: "ओला क्षति रिस्क डेटा लॉग करें" },
+                    p4: { g: "1. वाष्पीकरण रोकने के लिए शाम के समय हल्की सिंचाई करें।<br>2. खेत की मिट्टी में नमी बनाए रखने के लिए पराली या मल्चिंग का इस्तेमाल करें।", a: "ऐप वाष्पीकरण सूचकांक की गणना करके फसल के अनुसार पानी देने का क्रिटिकल शेड्यूल चार्ट तैयार करेगी।", b: "लू सिंचाई टाइमटेबल निकालें" },
+                    p5: { g: "1. रात 12 बजे के बाद खेत की मेड़ों पर धुआं करें ताकि तापमान न गिरे।<br>2. खेत में हल्की सतही सिंचाई करें, पानी पाले के असर को तुरंत बेअसर करता है।", a: "ऐप ग्राउंड इंफ्रास्ट्रक्चर के थर्मल सेंसर का डेटा ट्रैक करके रात में तापमान 4°C से कम होते ही इमरजेंसी अलार्म देगी।", b: "पाला थर्मल अलार्म ऑन करें" },
+                    p23: { g: "1. खेत में यूरिया की अंधी फ्लडिंग तुरंत बंद करें।<br>2. मिट्टी की जांच के आधार पर नाइट्रोजन को 3 भागों में बांटकर (Splitting) ही डालें।", a: "ऐप आपकी मिट्टी की कमी का सटीक वजन मापकर कस्टमाइज्ड 'NPK खाद सम्मिश्रण रेसिपी' कैलकुलेटर जनरेट करेगी।", b: "NPK खाद डोज रेसिपी बनाएं" },
+                    p61: { g: "1. साहूकार के कोरे कागज या ऊंचे ब्याज वाले अनुबंधों पर हस्ताक्षर बिल्कुल न करें।<br>2. अपने नजदीकी सरकारी या कॉपरेटिव बैंक में जाकर केसीसी के लिए संपर्क करें।", a: "ऐप आपके डिजिटल भूमि रिकॉर्ड (खसरा) का उपयोग करके सीधे सरकारी बैंक के लिए 4% ब्याज वाला 'डिजिटल KCC डॉकेट' तैयार करेगी।", b: "सस्ता KCC लोन आवेदन भरें" },
+                    p81: { g: "1. सहकारी समिति के भौतिक स्टॉक रजिस्टर में प्रविष्टि की मांग करें।<br>2. निर्धारित एमआरपी से एक भी रुपया अतिरिक्त न दें और रसीद अवश्य मांगें।", a: "ऐप आपके लाइव जीपीएस कोड के साथ खाद की कालाबाजारी की आधिकारिक शिकायत ड्राफ्ट करके सीधे जिला कृषि अधिकारी को भेजेगी।", b: "खाद कालाबाजारी शिकायत दर्ज करें" }
+                },
+                EN: {
+                    p1: { g: "1. Monitor corporate IMD weather charts immediately.<br>2. Switch to short-duration crop parameters to retain soil moisture.", a: "AnnaSathi isolates localized cloud formations to output 10km grid-level rain probability graphs.", b: "Launch Village Rain Radar Map" },
+                    p2: { g: "1. Tie down harvest storage bundles immediately.<br>2. Stop field irrigation immediately to prevent lodging.", a: "The system bypasses silent modes to issue critical acoustic warning alerts 3 hours before storm impact.", b: "Enable High-Priority Storm Alarms" },
+                    p3: { g: "1. Apply systemic potassium sprays to reinforce cell structure lines.<br>2. Apply immediate light anti-rot biological formulations.", a: "The app compiles historic cloud density variables to build verified loss metrics for faster claims processing.", b: "Log Hail Damage Index parameters" },
+                    p4: { g: "1. Deploy late evening shallow wetting configurations.<br>2. Use heavy organic straw mulching to control moisture evapotranspiration.", a: "AnnaSathi reads wind stress indices to deliver accurate crop specific irrigation cycle logs.", b: "Get Heatwave Irrigation Schedule" },
+                    p5: { g: "1. Create localized micro-climate smoke screens along field borders.<br>2. Execute light surface irrigation loops to secure ground warmth parameters.", a: "System hooks into surface thermal parameters to fire absolute warnings if temperatures fall below 4°C.", b: "Activate Frost Thermal Alarms" },
+                    p23: { g: "1. Halth immediate broadcast flooding of chemical Urea elements.<br>2. Adapt targeted nitrogen split applications based on standard timelines.", a: "The framework computes absolute chemical metrics to generate a precise custom NPK balance recipe chart.", b: "Get Precision NPK Blending Recipe" },
+                    p61: { g: "1. Reject informal high-interest debt covenants offered by non-licensed private entities.<br>2. Gather verified digital land coordinates.", a: "The app automates low-interest institutional KCC credit processing portfolios using verified land registry tracking details.", b: "Generate Institutional KCC Forms" },
+                    p81: { g: "1. Request absolute entries inside the cooperative society center stock registers.<br>2. Audit transactions against fixed government retail prices.", a: "AnnaSathi locks down geospatial tracking data to file formal anti-hoarding alerts to the District Fertilizer Controller portal.", b: "Report Fertilizer Black Marketing Hoarding" }
                 }
-            });
-        };
+            };
 
-        window.filterFpos = function() {
-            const val = document.getElementById('search-fpo-query').value.toLowerCase().trim();
-            const box = document.getElementById('box-fpo-listings');
-            box.innerHTML = '';
+            if (code === "none") {
+                card.classList.add('hidden');
+            } else {
+                card.classList.remove('hidden');
+                const dataset = languageMatrixText[appLanguageContext][code] || { g: "Statutory ground steps processing.", a: "Ecosystem automation processing loops active.", b: "Execute System Protocol" };
+                ground.innerHTML = dataset.g;
+                app.innerHTML = dataset.a;
+                btn.innerText = dataset.b;
+            }
+        }
 
-            FPO_DATA.forEach(item => {
-                if(!val || item.spec.includes(val)) {
-                    const card = document.createElement('div');
-                    card.className = 'list-card';
-                    card.innerHTML = `<div class="list-info"><h4>${item.name}</h4><p>Specialty: ${item.spec} | Active Members: ${item.size}</p></div><span class="tag" style="background:#f3e5f5; color:#7b1fa2;"><i class="fa-solid fa-phone"></i></span>`;
-                    box.appendChild(card);
+        function triggerAgriOSProtocol() {
+            alert(`⚙️ Production Subsystem Engaged!\n Handshake secure. Dispatching records...`);
+        }
+
+        function processCapturedPhoto(event) {
+            const loader = document.getElementById('cameraScanLoader');
+            const resultBox = document.getElementById('cameraScanResult');
+            const cropContext = document.getElementById('cameraCropContext').value;
+            
+            const diseaseTitle = document.getElementById('cameraDetectedDiseaseTitle');
+            const diseaseRemedy = document.getElementById('cameraDetectedDiseaseRemedy');
+
+            if(event.target.files && event.target.files[0]) {
+                resultBox.classList.add('hidden');
+                loader.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    resultBox.classList.remove('hidden');
+                    
+                    const diagnosticDB = {
+                        paddy: {
+                            HI: { t: "धान का झोंका रोग (Paddy Blast Disease)", r: "तुरंत ट्राइसाइक्लाजोल 75% WP @ 120 ग्राम प्रति एकड़ को 200 लीटर पानी में मिलाकर स्प्रे करें। नाइट्रोजन (यूरिया) की अतिरिक्त मात्रा डालना तुरंत रोक दें।" },
+                            EN: { t: "Paddy Blast Disease (Magnaporthe oryzae)", r: "Deploy targeted Tricyclazole 75% WP @ 120 grams per acre mixed evenly with 200 liters of fresh water. Halt immediate nitrogen fertilization loops." }
+                        },
+                        wheat: {
+                            HI: { t: "गेहूं की पत्ती का रतवा (Wheat Leaf Rust)", r: "प्रेषित उपचार: प्रोपिकोनाजोल 25% EC @ 200 मिली प्रति एकड़ की दर से खेत में छिड़काव करें। संक्रमित पौधों के अवशेषों को हटाकर नष्ट करें।" },
+                            EN: { t: "Wheat Leaf Rust (Puccinia triticina)", r: "Apply Propiconazole 25% EC @ 200 ml per acre balanced across 200 liters of water volume. Burn infected residue logs immediately." }
+                        },
+                        potato: {
+                            HI: { t: "आलू का पछेता झुलसा (Potato Late Blight)", r: "मैनकोज़ेब 75% WP @ 800 ग्राम प्रति एकड़ का सुरक्षात्मक छिड़काव करें। गंभीर स्थिति में साइमोक्सानिल + मैनकोज़ेब @ 600 ग्राम डालें।" },
+                            EN: { t: "Potato Late Blight (Phytophthora infestans)", r: "Execute prophylactic protective sprays using Mancozeb 75% WP @ 800g/acre. If acute infection shows, use Cymoxanil + Mancozeb @ 600g/acre." }
+                        },
+                        mustard: {
+                            HI: { t: "सरसों का सफेद रतवा (White Rust of Mustard)", r: "मेटालैक्सिल 8% + मैनकोज़ेब 64% WP @ 1 किलोग्राम प्रति एकड़ का पहला लक्षण दिखते ही तत्काल छिड़काव सुनिश्चित करें।" },
+                            EN: { t: "Mustard White Rust (Albugo candida)", r: "Deploy immediate applications of Metalaxyl 8% + Mancozeb 64% WP @ 1kg/acre upon visualization of localized pustule maps." }
+                        }
+                    };
+
+                    const matchedOutput = diagnosticDB[cropContext][appLanguageContext];
+                    diseaseTitle.innerText = matchedOutput.t;
+                    diseaseRemedy.innerHTML = matchedOutput.r;
+                }, 2500);
+            }
+        }
+
+        function toggleAppLanguage() {
+            appLanguageContext = (appLanguageContext === "HI") ? "EN" : "HI";
+            document.getElementById('langIndicatorBtn').innerText = (appLanguageContext === "HI") ? "EN / हिंदी" : "हिंदी / EN";
+
+            const langData = {
+                HI: {
+                    lblGeoNode: "लाइव मौसम स्टेशन रजिस्ट्री ग्रिड",
+                    lblHardshipTitle: "100 किसान समस्याएं डायरेक्ट एक्शन डेस्क",
+                    lblHardshipSub: "सीधे कानूनी और सरकारी जमीनी समाधान",
+                    lblCameraTitle: "AI कंप्यूटर विज़न रोग निदान केंद्र",
+                    lblCameraSub: "लाइव कैमरा और इमेज स्कैनिंग सिस्टम",
+                    lblSelectCropCam: "फ़ोटो खींचने से पहले फसल चुनें",
+                    lblTapCapture: "लाइव管 कैमरा चालू करें / फ़ोटो लें",
+                    lblCaptureDesc: "खेत में खड़े होकर बीमार पत्ती की स्पष्ट फोटो खींचे",
+                    lblScanningText: "मल्टी-स्पेक्ट्रल इमेज प्रोसेसिंग एक्टिव... पिक्सल डैमेज स्कैनिंग लूप चालू है।",
+                    lblMandiGridTitle: "अमेज़न एग्री-मार्केटप्लेस ट्रेडिंग ग्रिड",
+                    lblMarketCrop: "फसल का प्रकार",
+                    lblMarketHub: "लक्षित मंडी हब",
+                    lblMarketQty: "मात्रा (क्विंटल)",
+                    lblMarketPrice: "लक्षित कीमत (₹/क्विंटल)",
+                    lblMarketTotalVal: "कुल लाइव व्यापार मूल्यांकन सारांश:",
+                    btnPublishMarket: "लाइव ट्रेडिंग डेस्क पर भेजें",
+                    navControlText: "कंट्रोल पैनल",
+                    navCameraText: "AI कैमरा",
+                    navMandiText: "मंडी ग्रिड"
+                },
+                EN: {
+                    lblGeoNode: "Live Weather Station Registry Grid",
+                    lblHardshipTitle: "100 Hardships Deep Resolution Engine",
+                    lblHardshipSub: "Direct Executable Enforcement Protocols",
+                    lblCameraTitle: "AI Computer Vision Leaf Diagnostic Matrix",
+                    lblCameraSub: "Hardware Camera Integration Framework",
+                    lblSelectCropCam: "Select Crop Context Before Capture",
+                    lblTapCapture: "LAUNCH LIVE HARDWARE CAMERA",
+                    lblCaptureDesc: "Capture clear photograph of diseased leaf standing in the field",
+                    lblScanningText: "Executing Multi-Spectral Segmentation Neural Array... Running Pixel Anomaly Auditing Loops.",
+                    lblMandiGridTitle: "Amazon Agri-Marketplace Trading Grid",
+                    lblMarketCrop: "Select Crop Type",
+                    lblMarketHub: "Target Mandi Hub",
+                    lblMarketQty: "Quantity (Quintals)",
+                    lblMarketPrice: "Target Ask Price (₹/Qtl)",
+                    lblMarketTotalVal: "Live Transaction Valuation Summary:",
+                    btnPublishMarket: "PUBLISH TO LIVE TRADING DESK",
+                    navControlText: "Control OS",
+                    navCameraText: "AI Camera",
+                    navMandiText: "Market Grid"
                 }
-            });
-        };
+            };
 
-        window.renderRentals();
-        window.filterFpos();
+            const translate = langData[appLanguageContext];
+            for (let key in translate) {
+                const element = document.getElementById(key);
+                if(element) {
+                    if(element.tagName === "INPUT") element.placeholder = translate[key];
+                    else element.innerText = translate[key];
+                }
+            }
+            if(document.getElementById('masterProblemSelect').value !== "none") runUltimateActionEngine();
+        }
     </script>
 </body>
 </html>
